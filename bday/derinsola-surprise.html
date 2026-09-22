@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Birthday Derinsola</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+
+    --lock-bg: #eef1f5;
+    --lock-panel: #ffffff;
+    --lock-border: #d7dce2;
+    --lock-text: #1f2937;
+    --lock-muted: #6b7280;
+    --lock-accent: #2c4a7c;
+
+    --deep: #3b1361;
+    --plum: #6a2c91;
+    --violet: #9b4fd1;
+    --purple: #c65fe0;
+    --lavender: #f0b8ff;
+    --gold: #ffd1ec;
+    --paper: #fdf5ff;
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--lock-bg);
+    color: var(--lock-text);
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  html, body { height: 100%; }
+
+  /* prefers-color-scheme, kept subtle so both screens stay legible */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --lock-bg: #12151a;
+      --lock-panel: #1c2026;
+      --lock-border: #2c323b;
+      --lock-text: #e7e9ec;
+      --lock-muted: #9aa2ad;
+    }
+  }
+  :root[data-theme="dark"] {
+    --lock-bg: #12151a;
+    --lock-panel: #1c2026;
+    --lock-border: #2c323b;
+    --lock-text: #e7e9ec;
+    --lock-muted: #9aa2ad;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  /* ===================== LOCK SCREEN (deliberately dull/corporate) ===================== */
+  #lock {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--lock-bg);
+  }
+  .corp-nav {
+    padding: 18px 24px;
+    padding-top: calc(18px + env(safe-area-inset-top, 0px));
+    background: var(--lock-panel);
+    border-bottom: 1px solid var(--lock-border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .corp-logo {
+    width: 22px; height: 22px;
+    background: var(--lock-accent);
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .corp-name { font-size: 14px; font-weight: 600; color: var(--lock-text); letter-spacing: 0.2px; }
+  .corp-sub { font-size: 12px; color: var(--lock-muted); margin-left: 4px; }
+
+  .corp-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+  }
+  .corp-card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--lock-panel);
+    border: 1px solid var(--lock-border);
+    border-radius: 8px;
+    padding: 32px 28px;
+  }
+  .corp-card h1 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0 0 4px;
+    color: var(--lock-text);
+  }
+  .corp-card p.desc {
+    font-size: 13px;
+    color: var(--lock-muted);
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-size: 12.5px;
+    color: var(--lock-muted);
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--lock-border);
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--lock-text);
+    background: var(--lock-bg);
+    outline: none;
+  }
+  .field input:focus {
+    border-color: var(--lock-accent);
+    box-shadow: 0 0 0 3px rgba(44,74,124,0.12);
+  }
+  .corp-btn {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--lock-accent);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .corp-btn:active { opacity: 0.9; }
+  .corp-error {
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: #b3261e;
+    display: none;
+  }
+  .corp-hint {
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--lock-muted);
+    display: none;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .corp-hint.show { display: block; }
+  .corp-hint.visible { opacity: 1; }
+  .corp-foot {
+    padding: 16px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    text-align: center;
+    font-size: 11px;
+    color: var(--lock-muted);
+  }
+
+  /* granted state */
+  .granted {
+    text-align: center;
+    display: none;
+  }
+  .granted.show { display: block; }
+  .granted .tick {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: #1f8a53;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    font-size: 20px;
+  }
+  .granted p { color: var(--lock-muted); font-size: 13px; }
+
+  /* ===================== REVEAL SITE ===================== */
+  #reveal {
+    display: none;
+    background: linear-gradient(180deg, var(--deep) 0%, var(--plum) 40%, var(--violet) 75%, var(--purple) 100%);
+    color: var(--paper);
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+  }
+  #reveal.show { display: block; animation: fadeIn 1.1s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 22px; }
+
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 22px calc(40px + env(safe-area-inset-bottom, 0px));
+    padding-top: calc(60px + env(safe-area-inset-top, 0px));
+    position: relative;
+  }
+  .hero .eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--lavender);
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(44px, 11vw, 84px);
+    line-height: 1;
+    margin: 0 0 22px;
+    color: #fff;
+  }
+  .nick-row {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    margin-bottom: 30px;
+  }
+  .nick {
+    font-size: 12.5px;
+    padding: 6px 14px;
+    border: 1px solid rgba(201,166,240,0.4);
+    border-radius: 100px;
+    color: var(--lavender);
+    background: rgba(201,166,240,0.06);
+  }
+  .hero .lede {
+    max-width: 480px;
+    font-size: 15.5px;
+    line-height: 1.7;
+    color: #e6ddf4;
+    font-weight: 300;
+  }
+  .scroll-cue {
+    position: absolute;
+    bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+    font-size: 12px;
+    color: var(--lavender);
+    opacity: 0.8;
+  }
+
+  section { padding: 70px 0; }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(30px, 5vw, 42px);
+    font-weight: 600;
+    color: #fff;
+    margin: 0 0 14px;
+    text-align: center;
+  }
+  .section-intro {
+    text-align: center;
+    max-width: 480px;
+    margin: 0 auto 40px;
+    color: #d9cdec;
+    font-size: 14.5px;
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  /* envelope cards */
+  .envelopes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+  }
+  .envelope {
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(201,166,240,0.22);
+    border-radius: 4px;
+    padding: 24px 20px;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    transition: border-color 0.25s ease, background 0.25s ease;
+  }
+  .envelope:hover, .envelope:focus-visible {
+    border-color: var(--purple);
+    background: rgba(155,95,214,0.1);
+    outline: none;
+  }
+  .envelope .mark { font-size: 22px; margin-bottom: 14px; display: block; }
+  .envelope .title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .envelope .sub { font-size: 12.5px; color: #bfb0d6; font-weight: 300; }
+
+  /* closing */
+  .closing {
+    text-align: center;
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px));
+  }
+  .closing .keepsake {
+    max-width: 540px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,166,240,0.25);
+    border-radius: 4px;
+    padding: 44px 34px;
+  }
+  .closing p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(19px, 3vw, 23px);
+    line-height: 1.65;
+    color: #f3ecfa;
+    text-align: left;
+    margin: 0 0 18px;
+    font-weight: 500;
+  }
+  .closing .sign {
+    text-align: right;
+    font-style: italic;
+    color: var(--lavender);
+    font-size: 18px;
+    margin-top: 26px;
+  }
+
+  footer.foot {
+    text-align: center;
+    padding: 30px 20px calc(30px + env(safe-area-inset-bottom, 0px));
+    color: #7c6a95;
+    font-size: 12px;
+  }
+
+  /* photo placeholder */
+  .photo-slot {
+    margin-top: 18px;
+    min-height: 170px;
+    border: 1.5px dashed rgba(201,166,240,0.45);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 16px;
+    font-size: 12px;
+    color: #b7a6cf;
+    background: rgba(255,255,255,0.02);
+  }
+  .photo-slot img { max-width: 100%; max-height: 260px; border-radius: 3px; display: block; }
+
+  /* letter overlay */
+  .letter-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(11,6,20,0.88);
+    backdrop-filter: blur(4px);
+    z-index: 40;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    padding: 40px 18px calc(40px + env(safe-area-inset-bottom, 0px));
+    padding-top: calc(40px + env(safe-area-inset-top, 0px));
+  }
+  .letter-overlay.show { display: flex; }
+  .letter-card {
+    background: linear-gradient(160deg, var(--plum) 0%, var(--violet) 55%, var(--purple) 100%);
+    color: #fdf5ff;
+    max-width: 520px;
+    width: 100%;
+    border-radius: 12px;
+    padding: 38px 30px;
+    position: relative;
+    overflow: hidden;
+  }
+  .letter-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 12% 15%, rgba(255,255,255,0.16) 0, transparent 42%),
+      radial-gradient(circle at 88% 85%, rgba(255,255,255,0.12) 0, transparent 38%),
+      radial-gradient(rgba(255,255,255,0.10) 1.4px, transparent 1.4px);
+    background-size: auto, auto, 22px 22px;
+    pointer-events: none;
+  }
+  .letter-card > * { position: relative; z-index: 1; }
+  .letter-card .close-btn {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.2);
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    z-index: 2;
+  }
+  .letter-card .mark { font-size: 22px; display: block; margin-bottom: 10px; }
+  .letter-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    margin: 0 0 4px;
+    color: var(--gold);
+  }
+  .letter-card .body-text {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #f5e8ff;
+    font-weight: 300;
+    margin-top: 20px;
+  }
+  .letter-card .body-text p { margin: 0 0 14px; }
+  .letter-card .mini-divider {
+    text-align: center;
+    font-size: 13px;
+    opacity: 0.65;
+    margin: 4px 0 16px;
+  }
+  .letter-card .photo-slot { color: #f2e0ff; border-color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.08); margin-top: 14px; }
+
+  /* falling hearts */
+  .heart-piece {
+    position: fixed;
+    top: -30px;
+    font-size: 18px;
+    pointer-events: none;
+    z-index: 60;
+    animation: fall linear forwards;
+  }
+  @keyframes fall {
+    to { transform: translateY(105vh) rotate(180deg); opacity: 0.2; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== LOCK SCREEN ===================== -->
+<div id="lock">
+  <div class="corp-nav">
+    <div class="corp-logo"></div>
+    <div class="corp-name">Meridian&nbsp;Systems</div>
+    <div class="corp-sub">Employee Self-Service Portal</div>
+  </div>
+
+  <div class="corp-main">
+    <div class="corp-card">
+      <div id="loginState">
+        <h1>Secure sign-in required</h1>
+        <p class="desc">This session is restricted. Enter your access code to continue to the employee dashboard.</p>
+
+        <div class="field">
+          <label for="userField">User</label>
+          <input id="userField" type="text" value="Derinsola" disabled>
+        </div>
+        <div class="field">
+          <label for="passField">Access code</label>
+          <input id="passField" type="password" placeholder="Enter code" autocomplete="off">
+        </div>
+        <button class="corp-btn" onclick="tryUnlock()">Verify and continue</button>
+
+        <div class="corp-error" id="errorMsg">That code isn't valid. Please try again.</div>
+        <div class="corp-hint" id="hintMsg">💡 Hint: Worst Nickname You Gave Me.</div>
+      </div>
+
+      <div class="granted" id="grantedState">
+        <div class="tick">✓</div>
+        <h1>Access granted</h1>
+        <p>Loading your dashboard…</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="corp-foot">© Meridian Systems — Internal use only</div>
+</div>
+
+<!-- ===================== REVEAL SITE ===================== -->
+<div id="reveal">
+
+  <section class="hero">
+    <div class="eyebrow">One year, and a birthday, all in one day</div>
+    <h1>Happy Birthday<br>Derinsola</h1>
+    <div class="nick-row">
+      <span class="nick">Ifemi</span>
+      <span class="nick">My Princess</span>
+      <span class="nick">My Rihanna</span>
+      <span class="nick">Angry Bird</span>
+      <span class="nick">Mama</span>
+    </div>
+    <p class="lede">Today isn't just your birthday. It's the day we clocked one whole year of us. I built you something real, because you deserve more than something I could just buy.</p>
+    <div class="scroll-cue">scroll down and tap each for a suprise ↓</div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="section-title">Five letters, for five sides of you</h2>
+      <p class="section-intro">Open them in any order you want. Each one is something I actually mean, written for you, Derinsola — and only you.</p>
+
+      <div class="envelopes">
+        <button class="envelope" onclick="openLetter('funny')">
+          <span class="mark">😂</span>
+          <span class="title">When You Need A Laugh</span>
+          <span class="sub">the silly, teasing one</span>
+        </button>
+        <button class="envelope" onclick="openLetter('romantic')">
+          <span class="mark">🌷</span>
+          <span class="title">For The Romantic In You</span>
+          <span class="sub">soft, slow, and sincere</span>
+        </button>
+        <button class="envelope" onclick="openLetter('flirty')">
+          <span class="mark">😏</span>
+          <span class="title">Just Between Us</span>
+          <span class="sub">read this one alone</span>
+        </button>
+        <button class="envelope" onclick="openLetter('warmth')">
+          <span class="mark">🤍</span>
+          <span class="title">When You Need To Feel Safe</span>
+          <span class="sub">for the harder days</span>
+        </button>
+        <button class="envelope" onclick="openLetter('forever')">
+          <span class="mark">💜</span>
+          <span class="title">Forever &amp; Always</span>
+          <span class="sub">where I stand, a year in</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="closing">
+    <div class="wrap">
+      <h2 class="section-title">Before you go</h2>
+      <div class="keepsake">
+        <p>Derinsola, a year ago I didn't know I'd get to love someone the way I love you. I didn't plan for you — you just walked in and made yourself permanent, and I've never once wanted to argue with that.</p>
+        <p>Today you turn a year older, and we turn a year "us." I keep thinking about how ordinary the day we met felt, and how unordinary every day since has been because you were in it. You've been my calm on loud days and my loudest cheerleader on quiet ones. My princess, my Rihanna, my angry bird when you're mad at me and still somehow soft with me minutes later, my mama when I need taking care of. Ifemi, always.</p>
+        <p>I don't have a big gift wrapped in paper this year. What I have is this — every version of what I feel for you, written down so you never have to wonder. So happy birthday, my love. Here's to the year we just finished, and to me getting to love you through every one after it.</p>
+        <div class="sign">Forever yours,<br>your senseless boy</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot">made by hand, for Derinsola — 🖤</footer>
+</div>
+
+<!-- ===================== LETTER OVERLAY ===================== -->
+<div class="letter-overlay" id="letterOverlay" onclick="if(event.target===this) closeLetter()">
+  <div class="letter-card">
+    <button class="close-btn" onclick="closeLetter()">✕</button>
+    <span class="mark" id="letterMark"></span>
+    <h3 id="letterTitle"></h3>
+    <!-- Photo placeholder: replace the contents of this div with an <img src="YOUR PHOTO URL"> tag -->
+    <div class="photo-slot" id="letterPhoto">📷 Add a photo here</div>
+    <div class="body-text" id="letterBody"></div>
+  </div>
+</div>
+
+<script>
+  const PASSWORD = "senseless boy";
+  let attempts = 0;
+
+  function tryUnlock() {
+    const val = document.getElementById('passField').value.trim().toLowerCase().replace(/\s+/g,' ');
+    const target = PASSWORD.toLowerCase();
+    if (val === target || val === target.replace(' ', '')) {
+      document.getElementById('loginState').style.display = 'none';
+      document.getElementById('grantedState').classList.add('show');
+      setTimeout(unlockReveal, 1200);
+    } else {
+      attempts++;
+      document.getElementById('errorMsg').style.display = 'block';
+      const hint = document.getElementById('hintMsg');
+      hint.classList.add('show');
+      requestAnimationFrame(() => hint.classList.add('visible'));
+    }
+  }
+
+  document.getElementById('passField').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') tryUnlock();
+  });
+
+  function unlockReveal() {
+    document.getElementById('lock').style.display = 'none';
+    const reveal = document.getElementById('reveal');
+    reveal.classList.add('show');
+    burstHearts();
+  }
+
+  function burstHearts() {
+    const symbols = ['💜','🤍','✨'];
+    for (let i = 0; i < 26; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'heart-piece';
+        el.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.animationDuration = (3 + Math.random()*2.5) + 's';
+        el.style.fontSize = (14 + Math.random()*14) + 'px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 6000);
+      }, i * 90);
+    }
+  }
+
+  const LETTERS = {
+    funny: {
+      mark: '😂',
+      title: 'When You Need A Laugh',
+      photo: 'photo (1).jpeg',
+      body: `<p>Okay, Derinsola.My Angry Bird. My love. Let's talk about you for a second, because someone has to.</p>
+      <div class="mini-divider">💜</div>
+      <p>You have argued with me about things you were WRONG about, lost the argument, and still walked away acting like you won. You steal my hoodies and then act personally offended when I ask for them back, as if I'm the unreasonable one. You can go from calm to fully worked up in about four seconds flat over the smallest thing, and somehow I still find it funny instead of terrifying, which honestly says a lot about how far gone I am for you.</p>
+      <div class="mini-divider">💜</div>
+      <p>A year of you has been a year of laughing more than I expected to. You're dramatic, you're stubborn, you're a little unserious in the best way, and somehow that's the exact combination I didn't know I needed. So happy birthday to the most ridiculous, most hilarious, most "how are you like this" person I know. I wouldn't trade the chaos for anything.</p>`
+    },
+    romantic: {
+      mark: '🌷',
+      title: 'For The Romantic In You',
+      photo: 'photo (2).jpeg',
+      body: `<p>Derinsola, there's a version of this note that's just facts: it's your birthday, and it's been a year since I started falling for you. But that doesn't say enough.</p>
+      <div class="mini-divider">💜</div>
+      <p>What I actually want you to know is how quiet and steady this feels now, a year in — like I'm not scrambling to figure out how I feel about you anymore, I just know. I know in the mornings when you're half asleep and still trying to talk to me. I know on the days you're stressed and go quiet, and I just want to sit with you until you're okay again. I know it in purple, somehow, because now I can't see that color without thinking of you.</p>
+      <div class="mini-divider">💜</div>
+      <p>You've made an ordinary year feel like something I'll remember for the rest of my life. So here's to us, and to however many more birthdays I get to write you letters like this one. Happy birthday, my love. I'm so glad it's you.</p>`
+    },
+    flirty: {
+      mark: '😏',
+      title: 'Just Between Us',
+      photo: 'photo (5).jpeg',
+      body: `<p>Alright, Derinsola. Since you made it this far, let's be honest for a second.</p>
+      <div class="mini-divider">💜</div>
+      <p>You know exactly what you're doing when you look at me like that. You know the effect you have when you walk into a room and don't even try. A whole year in and you still manage to make me lose my train of thought over something as small as the way you laugh or the way you say my name when you want something from me. It's genuinely unfair how good you look doing absolutely nothing.</p>
+      <div class="mini-divider">💜</div>
+      <p>So happy birthday to the girl who's had me wrapped around her finger since day one and still somehow acts surprised about it. My princess, my Rihanna — you already know exactly what you do to me.</p>`
+    },
+    warmth: {
+      mark: '🤍',
+      title: 'When You Need To Feel Safe',
+      photo: 'photo (4).jpeg',
+      body: `<p>Derinsola, if you're reading this on a day that feels heavy, I want this one to slow you down for a second.</p>
+      <div class="mini-divider">💜</div>
+      <p>Whatever it is you're carrying, you don't have to carry it like you're on your own. A year of being yours has taught me your quiet days as much as your loud ones. You can be tired, you can be unsure, you can be the version of you that isn't put together, and for as long as we get to have this, I will still choose you. Every time.</p>
+      <div class="mini-divider">💜</div>
+      <p>You are safe with me, mama. Not just today, on your birthday, but on every ordinary Tuesday after it too. Rest here if you need to. I've got you.</p>`
+    },
+    forever: {
+      mark: '💜',
+      title: 'Forever & Always',
+      photo: 'photo (3).jpeg',
+      body: `<p>One year down, Derinsola. I keep saying that like it's a small thing, and it isn't.</p>
+      <div class="mini-divider">💜</div>
+      <p>A year ago I didn't know your laugh yet, didn't know how you take your stress out on innocent pillows, didn't know what your voice sounds like right before you fall asleep on the phone with me. Now I can't imagine a version of my life that doesn't have all of that in it.</p>
+      <div class="mini-divider">💜</div>
+      <p>I won't pretend I know exactly how our story goes from here — none of us really do. Life has a way of throwing things at people that nobody plans for, and I'm not going to stand here and promise you a forever I can't actually guarantee. What I can promise is that I'm going to try, every day, to be someone worth staying for. And honestly, I made this whole thing partly for a reason I hope you never need: if life ever takes us somewhere we didn't choose, I want this to still be here — not as a promise I couldn't keep, but as proof that for this year, you were loved completely, by someone who meant every word of it.</p>
+      <p>So happy birthday, Ifemi. Here's to trying our best, one ordinary day at a time — together for as long as life lets us be together before going separate ways.</p>`
+    }
+  };
+
+  function openLetter(key) {
+    const data = LETTERS[key];
+    document.getElementById('letterMark').textContent = data.mark;
+    document.getElementById('letterTitle').textContent = data.title;
+    document.getElementById('letterBody').innerHTML = data.body;
+    const photoEl = document.getElementById('letterPhoto');
+    if (data.photo) {
+      photoEl.innerHTML = '<img src="' + data.photo + '" alt="' + data.title + '">';
+    } else {
+      photoEl.innerHTML = '📷 Add a photo here';
+    }
+    document.getElementById('letterOverlay').classList.add('show');
+  }
+  function closeLetter() {
+    document.getElementById('letterOverlay').classList.remove('show');
+  }
+</script>
+</body>
+</html>
